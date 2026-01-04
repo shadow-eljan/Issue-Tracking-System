@@ -1,4 +1,5 @@
 import User from "../models/Users.js";
+import generateToken from "../Utils/GenerateNewToken.js";
 
 export const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -16,4 +17,27 @@ export const registerUser = async (req, res) => {
       role: user.role,
     },
   });
+};
+
+export const login = async(req, res) =>{
+  const {email, password} = req.body;
+  const user = await User.findOne({email});
+  if(!user) {
+    return res.status(404).send({error: "User not found."})
+  }
+
+  const isMatch = await user.comparePassword(password);
+  if(isMatch){
+    const token = generateToken(user._id);
+    res.send({
+      message: "Login Successfull",
+      user:{
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },token,
+    });
+  }else{
+    res.status(400).send({error: "invalid Username or Password."})
+  }
 };
