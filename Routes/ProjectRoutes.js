@@ -1,6 +1,5 @@
 import express from   "express";
 import {createProject, viewProject, updateProject, deleteProject} from "../Controllers/ProjectController.js"
-import router from "./UserRoutes.js";
 
 const projectRouter = express.Router();
 
