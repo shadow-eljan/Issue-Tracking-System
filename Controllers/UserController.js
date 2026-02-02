@@ -1,5 +1,10 @@
-import User from "../models/Users.js";
+import User from "../models/User.js";
 import generateToken from "../Utils/GenerateNewToken.js";
+
+export const getAllUsers = async (req, res) => {
+  const users = await User.find().select("-password");
+  res.send({ users });
+}
 
 export const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -41,3 +46,4 @@ export const login = async(req, res) =>{
     res.status(400).send({error: "invalid Username or Password."})
   }
 };
+
