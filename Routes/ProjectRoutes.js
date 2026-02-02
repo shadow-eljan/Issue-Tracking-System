@@ -1,12 +1,18 @@
 import express from   "express";
-import {createProject, viewProject, updateProject, deleteProject} from "../Controllers/ProjectController.js"
+import {addProject, getProjects, getProjectById} from "../Controllers/ProjectController.js"
+import auth from "../middlewares/auth.js";
+import authorize from "../middlewares/authorize.js";
 
 const projectRouter = express.Router();
 
-projectRouter.get("/view/:key",  viewProject);
-projectRouter.get("/view",  viewProject);
-projectRouter.post("/new", createProject);
-projectRouter.put("/update/:id", updateProject);
-projectRouter.delete("/delete/:id", deleteProject);
+projectRouter.post("/", auth, authorize(["admin"]), addProject);
+projectRouter.get("/", auth, getProjects);
+projectRouter.get("/:id", auth, getProjectById);
 
 export default projectRouter;
+
+
+
+
+
+
